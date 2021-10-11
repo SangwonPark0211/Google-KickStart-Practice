@@ -7,7 +7,7 @@ for t in range(T):
         attraction.append(temp)
     # sort attraction by rating in decreasing order
     attraction.sort(key=lambda x:x[0], reverse=True)
-    day_arr = [[] for _ in range(3 * 10**5 + 1)]
+    day_arr = [[] for _ in range(D + 1)]
     for i in range(N):
         r, s, e = attraction[i]
         for j in range(s,e+1):
