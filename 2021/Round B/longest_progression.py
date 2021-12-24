@@ -53,8 +53,10 @@ for t in range(T):
     for i in range(2, n-2):
         if arr[i-1] - arr[i-2] == arr[i+2] - arr[i+1] and (arr[i-1] - arr[i-2]) * 2 == arr[i+1] - arr[i-1]:
             ans = max(ans, end[i-1] + 1 + start[i+1])
-        elif arr[i-1] - arr[i-2] != arr[i+2] - arr[i+1] and (arr[i-1] - arr[i-2]) * 2 == arr[i+1] - arr[i-1]:
+        if arr[i-1] - arr[i-2] != arr[i+2] - arr[i+1] and (arr[i-1] - arr[i-2]) * 2 == arr[i+1] - arr[i-1]:
             ans = max(ans, end[i-1] + 2)
+        if arr[i-1] - arr[i-2] != arr[i+2] - arr[i+1] and (arr[i+2] - arr[i+1]) * 2 == arr[i+1] - arr[i-1]:
+            ans = max(ans, 2 + start[i+1])
     print(f'Case #{t+1}: ' + str(ans))
     # print(start)
     # print(end)
