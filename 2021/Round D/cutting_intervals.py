@@ -2,34 +2,42 @@
 
 from collections import Counter
 
-def find_intersect(s1, s2):
-    s1 = set(s1)
-    s2 = set(s2)
-    common = s1.intersection(s2)
-    return len(common)
-
 def cuttingIntervals():
     N, C = map(int, input().split())
     intervals = []
     for _ in range(N):
         s, e = map(int, input().split())
         intervals.append((s,e))
-    counter = {}
+
+    pos_lines = {}
     for s, e in intervals:
-        for i in range(s+1, e):
-            if i not in counter:
-                counter[i] = 1
-            else:
-                counter[i] += 1
-    counter = sorted(counter.items(), key=lambda x : x[1], reverse=True)
-    cut_pos = []
-    for i, c in enumerate(counter):
-        if i+1 > C: break
-        cut_pos.append(c[0])
-    ans = 0
-    for s, e in intervals:
-        ans += find_intersect(cut_pos, range(s+1, e)) + 1
+        if s+1 not in pos_lines:
+            pos_lines[s+1] = 0
+        pos_lines[s+1] += 1
+        if e not in pos_lines:
+            pos_lines[e] = 0
+        pos_lines[e] -= 1
+    pos_lines = sorted(pos_lines.items())
+    # print(pos_lines)
+
+    cuts_lines = []
+    affected_lines = 0
+    for i in range(len(pos_lines)-1):
+        affected_lines += pos_lines[i][1]
+        possible_cuts = pos_lines[i+1][0] - pos_lines[i][0]
+        cuts_lines.append((affected_lines, possible_cuts))
+    cuts_lines = sorted(cuts_lines, reverse=True)
+    
+    ans = N
+    for lines, cuts in cuts_lines:
+        if cuts<=C:
+            ans += lines * cuts
+            C -= cuts
+        else:
+            ans += lines * C
+            break
     return ans
+
 
 for t in range(int(input())):
     print(f"Case #{t+1}: " + str(cuttingIntervals()))
