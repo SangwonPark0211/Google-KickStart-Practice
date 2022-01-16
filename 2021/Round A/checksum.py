@@ -1,5 +1,5 @@
 # https://codingcompetitions.withgoogle.com/kickstart/round/0000000000436140/000000000068c2c3
-
+# 참고 : https://down-develope.tistory.com/2
 from collections import deque
 
 def init():
@@ -53,9 +53,25 @@ def checksum():
                     A[col_list.index(-1)][c] = 0
         else:
             A[row][col] = 0
-    # for i in range(N):
-    #     print(A[i])
+    for i in range(N):
+        print(A[i])
     return ans
 
 for t in range(int(input())):
     print(f"Case #{t+1}: "+str(checksum()))
+
+'''
+4
+-1 -1 1 1
+-1 -1 -1 1
+1 1 -1 -1
+1 1 -1 -1
+2 2 0 0
+2 2 1 0
+0 0 2 2
+0 0 2 2
+0 0 0 0
+0 0 0 0
+ans : 4
+output : 5
+'''
