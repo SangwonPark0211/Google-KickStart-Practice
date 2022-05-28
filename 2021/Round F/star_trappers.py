@@ -4,6 +4,18 @@ from math import sqrt
 import sys
 input = sys.stdin.readline
 
+def prod(a,b):
+    return a[0]*b[1] - a[1]*b[0]
+
+def distance(a,b):
+    return sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+
+def perimeter(a,b,c):
+    return distance(a,b) + distance(b,c) + distance(c,a)
+
+def vec(a,b):
+    return [b[0]-a[0], b[1]-a[1]]
+
 def sol():
     N = int(input())
     white = []
@@ -16,68 +28,20 @@ def sol():
     ans = float('inf')
     for i in range(N):
         for j in range(i+1,N):
-            if i==j:
-                continue
             for k in range(j+1,N):
-                if i==k or j==k:
-                    continue
-                smaller, larger = 0, 0
-                x1, y1 = white[i]
-                x2, y2 = white[j]
-                x3, y3 = white[k]
-                if x1==x2:
-                    if x1 < blue[0]:
-                        larger += 1
-                    elif x1 == blue[0]:
-                        continue
-                    else:
-                        smaller += 1
-                else:
-                    temp1 = ((y1-y2)/(x1-x2))*blue[0] + y1-((y1-y2)/(x1-x2))*x1
-                    if temp1 < blue[1]:
-                        larger += 1
-                    elif temp1 == blue[1]:
-                        continue
-                    else:
-                        smaller += 1
-                if x1==x3:
-                    if x1 < blue[0]:
-                        larger += 1
-                    elif x1 == blue[0]:
-                        continue
-                    else:
-                        smaller += 1
-                else:
-                    temp2 = ((y1-y3)/(x1-x3))*blue[0] + y1-((y1-y3)/(x1-x3))*x1
-                    if temp2 < blue[1]:
-                        larger += 1
-                    elif temp2 == blue[1]:
-                        continue
-                    else:
-                        smaller += 1
-                if x2==x3:
-                    if x2 < blue[0]:
-                        larger += 1
-                    elif x2 == blue[0]:
-                        continue
-                    else:
-                        smaller += 1
-                else:
-                    temp3 = ((y2-y3)/(x2-x3))*blue[0] + y2-((y2-y3)/(x2-x3))*x2
-                    # print(temp3)
-                    if temp3 < blue[1]:
-                        larger += 1
-                    elif temp3 == blue[1]:
-                        continue
-                    else:
-                        smaller += 1
-                    # print("larger:", larger, "smaller:", smaller)
-                if (smaller == 1 and larger == 2) or (smaller == 2 and larger == 1):
-                    perimeter = sqrt((x1-x2)**2+(y1-y2)**2) + sqrt((x1-x3)**2+(y1-y3)**2) + sqrt((x3-x2)**2+(y3-y2)**2)
-                    ans = min(ans, perimeter)
-    if ans == float('inf'):
-        ans = "IMPOSSIBLE"
-    return ans
+                a, b, c = white[i], white[j], white[k]
+                p = blue
+                ap = vec(a,p)
+                ab = vec(a,b)
+                bp = vec(b,p)
+                bc = vec(b,c)
+                cp = vec(c,p)
+                ca = vec(c,a)
+                prod1, prod2, prod3 = prod(ap,ab), prod(bp,bc), prod(cp,ca)
+                if (prod1>0 and prod2>0 and prod3>0) or (prod1<0 and prod2<0 and prod3<0):
+                # if (prod1<0 and prod2<0 and prod3<0):
+                    ans = min(ans, perimeter(a,b,c))
+    return ans if ans!=float('inf') else "IMPOSSIBLE"
 
 for t in range(int(input())):
     print(f"Case #{t+1}: "+str(sol()))
